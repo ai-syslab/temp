@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Linked List InsertBack Visualizer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em;
+      gap: 2em;
+    }
+
+    h1 {
+      margin-bottom: 0;
+    }
+
+    .content {
+      display: flex;
+      gap: 2em;
+      align-items: flex-start;
+    }
+
+    pre {
+      background: #f5f5f5;
+      padding: 1em;
+      border-radius: 8px;
+      width: 400px;
+      position: relative;
+    }
+
+    .code-line {
+      transition: background-color 0.3s;
+    }
+
+    .highlight-line {
+      background-color: #ffe599;
+    }
+
+    .list {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      flex-wrap: wrap;
+    }
+
+    .node {
+      border: 2px solid black;
+      border-radius: 8px;
+      width: 60px;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+      position: relative;
+      transition: background-color 0.5s, transform 0.5s;
+    }
+
+    .arrow {
+      font-size: 2em;
+    }
+
+    .highlight {
+      background-color: lightgreen;
+    }
+
+    .new {
+      background-color: lightblue;
+    }
+
+    #controls {
+      margin-top: 1em;
+      width: 100%;
+      text-align: center;
+    }
+
+    #newnode-area {
+      margin-top: 2em;
+    }
+
+    #newnode-label {
+      font-weight: bold;
+    }
+
+    #newnode-container {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 1em;
+    }
+
+  </style>
+</head>
+<body>
+
+<h1>Adding node to end of linked list</h1>
+
+<div class="content">
+  <div>
+    <h3>Code</h3>
+    <pre id="code">
+<span class="code-line" id="line1">Node* newNode = new Node(99);</span>
+<span class="code-line" id="line2">Node* current;</span>
+<span class="code-line" id="line3">for (current = head;</span>
+<span class="code-line" id="line4">     current->next != nullptr;</span>
+<span class="code-line" id="line5">     current = current->next) {}</span>
+<span class="code-line" id="line6">current->next = newNode;</span>
+    </pre>
+    <div id="controls">
+      <button onclick="step()">Next Step</button>
+    </div>
+  </div>
+
+  <div>
+    <h3>Linked List</h3>
+    <div class="list" id="list">
+      <div class="node" id="node1">3</div>
+      <div class="arrow">→</div>
+      <div class="node" id="node2">7</div>
+      <div class="arrow">→</div>
+      <div class="node" id="node3">12</div>
+    </div>
+
+    <div id="newnode-area">
+      <div id="newnode-label">newNode (waiting to be linked):</div>
+      <div id="newnode-container"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let stepNum = 0;
+  let tempNode = null;
+
+  function clearHighlights() {
+    document.querySelectorAll(".code-line").forEach(line => {
+      line.classList.remove("highlight-line");
+    });
+    document.querySelectorAll(".node").forEach(node => {
+      node.classList.remove("highlight");
+    });
+  }
+
+  function step() {
+    clearHighlights();
+
+    switch (stepNum) {
+      case 0:
+        document.getElementById("line1").classList.add("highlight-line");
+        tempNode = document.createElement("div");
+        tempNode.className = "node new";
+        tempNode.id = "tempNewNode";
+        tempNode.textContent = "99";
+        document.getElementById("newnode-container").appendChild(tempNode);
+        break;
+
+      case 1:
+        document.getElementById("line2").classList.add("highlight-line");
+        break;
+
+      case 2:
+        document.getElementById("line3").classList.add("highlight-line");
+        document.getElementById("node1").classList.add("highlight");
+        break;
+
+      case 3:
+        document.getElementById("line4").classList.add("highlight-line");
+        document.getElementById("node1").classList.remove("highlight");
+        document.getElementById("node2").classList.add("highlight");
+        break;
+
+      case 4:
+        document.getElementById("line4").classList.add("highlight-line");
+        document.getElementById("node2").classList.remove("highlight");
+        document.getElementById("node3").classList.add("highlight");
+        break;
+
+      case 5:
+        document.getElementById("line5").classList.add("highlight-line");
+        break;
+
+      case 6:
+        document.getElementById("line6").classList.add("highlight-line");
+        document.getElementById("node3").classList.remove("highlight");
+
+        const arrow = document.createElement("div");
+        arrow.className = "arrow";
+        arrow.textContent = "→";
+
+        document.getElementById("newnode-container").removeChild(tempNode);
+        document.getElementById("list").appendChild(arrow);
+        document.getElementById("list").appendChild(tempNode);
+        break;
+
+      case 7:
+        alert("Insertion complete!");
+        break;
+    }
+
+    stepNum++;
+  }
+</script>
+
+</body>
+</html>
